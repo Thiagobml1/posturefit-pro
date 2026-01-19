@@ -46,7 +46,7 @@
             const sum = document.getElementById('sum').value;
             const age = document.getElementById('age').value;
             // Aqui ele chama a API que você criou no Passo 3
-            const res = await fetch('SUA_URL_DO_RAILWAY/calculate-pollock', {
+            const res = await fetch('posturefit-pro-production.up.railway.app', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({sum, age, gender: 'M'})
