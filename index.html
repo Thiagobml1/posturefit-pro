@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PostureFit Pro - Simetógrafo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .grid-overlay {
+            background-image: 
+                linear-gradient(to right, rgba(0, 255, 0, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 255, 0, 0.2) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white p-10">
+    <h1 class="text-3xl font-bold mb-5">PostureFit Pro - Avaliação Postural</h1>
+    
+    <div class="flex gap-10">
+        <div class="relative border-4 border-green-500 w-[450px] h-[600px] bg-black">
+            <div class="absolute inset-0 grid-overlay z-10 pointer-events-none"></div>
+            <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-green-400 z-20"></div> <input type="file" id="upload" class="mt-4 p-2 bg-white text-black rounded" onchange="previewImage(event)">
+            <img id="preview" class="w-full h-full object-cover hidden">
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg w-80">
+            <h2 class="text-xl font-bold mb-4">Calculadora Pollock</h2>
+            <input id="sum" type="number" placeholder="Soma das 7 dobras" class="w-full mb-2 p-2 text-black">
+            <input id="age" type="number" placeholder="Idade" class="w-full mb-2 p-2 text-black">
+            <button onclick="calc()" class="w-full bg-green-600 p-2 rounded font-bold">Calcular % Gordura</button>
+            <p id="result" class="mt-4 text-2xl text-green-400 font-bold"></p>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const img = document.getElementById('preview');
+                img.src = reader.result;
+                img.classList.remove('hidden');
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        async function calc() {
+            const sum = document.getElementById('sum').value;
+            const age = document.getElementById('age').value;
+            // Aqui ele chama a API que você criou no Passo 3
+            const res = await fetch('SUA_URL_DO_RAILWAY/calculate-pollock', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({sum, age, gender: 'M'})
+            });
+            const data = await res.json();
+            document.getElementById('result').innerText = data.fatPercentage + "%";
+        }
+    </script>
+</body>
+</html>
